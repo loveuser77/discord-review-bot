@@ -99,7 +99,7 @@ def now() -> str:
     return datetime.datetime.utcnow().isoformat()
 
 
-# ---------- CONFIG ----------
+
 
 async def get_config(guild_id: int) -> aiosqlite.Row:
     db = await get_db()
@@ -118,7 +118,7 @@ async def get_config(guild_id: int) -> aiosqlite.Row:
 
 
 async def update_config(guild_id: int, **campos):
-    await get_config(guild_id)  # asegura que exista la fila
+    await get_config(guild_id)  
     db = await get_db()
     columnas = ", ".join(f"{k} = ?" for k in campos)
     valores = list(campos.values()) + [guild_id]
@@ -141,8 +141,6 @@ async def next_ticket_number(guild_id: int) -> int:
     return row["ticket_counter"]
 
 
-# ---------- PLANTILLAS ----------
-
 async def crear_plantilla(guild_id: int, nombre: str, instrucciones: str, valor: float) -> int:
     db = await get_db()
     cur = await db.execute(
@@ -164,8 +162,6 @@ async def get_plantilla(plantilla_id: int):
     cur = await db.execute("SELECT * FROM plantillas WHERE id = ?", (plantilla_id,))
     return await cur.fetchone()
 
-
-# ---------- STOCK / REVIEWS ----------
 
 async def agregar_stock(guild_id: int, plantilla_id: int, cantidad: int):
     db = await get_db()
@@ -233,9 +229,9 @@ async def get_review(review_id: int):
 async def enviar_prueba(review_id: int, link: str):
     db = await get_db()
     await db.execute(
-        "UPDATE reviews SET estado = 'pendiente_verificacion', proof_link = ? WHERE id = ?",
-        (link, review_id),
-    )
+        "UPDATE reviews SET estado = 'pendiente_verificacion', proof_link = ? WHE
+        (link, review_id)
+
     await db.commit()
 
 
@@ -254,7 +250,7 @@ async def aprobar_review(review_id: int, staff_id: int):
 
 async def rechazar_review(review_id: int, staff_id: int, razon: str):
     db = await get_db()
-    # Vuelve al stock: se libera para que cualquiera la pueda reclamar de nuevo
+    
     await db.execute(
         """
         UPDATE reviews
@@ -343,7 +339,7 @@ async def todas_las_reseñas(guild_id: int):
     return await cur.fetchall()
 
 
-# ---------- TICKETS ----------
+
 
 async def crear_ticket(guild_id: int, channel_id: int, user_id: int) -> int:
     db = await get_db()
@@ -395,7 +391,7 @@ async def tickets_abiertos(guild_id: int):
     return await cur.fetchall()
 
 
-# ---------- BALANCES ----------
+
 
 async def get_balance(guild_id: int, user_id: int) -> float:
     db = await get_db()
@@ -453,7 +449,7 @@ async def get_metodo_pago(guild_id: int, user_id: int):
     return row["payment_method"] if row else None
 
 
-# ---------- BLACKLIST ----------
+
 
 async def agregar_blacklist(guild_id: int, user_id: int, reason: str, added_by: int):
     db = await get_db()
@@ -485,7 +481,7 @@ async def esta_en_blacklist(guild_id: int, user_id: int) -> bool:
     return (await cur.fetchone()) is not None
 
 
-# ---------- REPORTES ----------
+
 
 async def crear_reporte(guild_id: int, review_id: int, user_id: int, reason: str) -> int:
     db = await get_db()
