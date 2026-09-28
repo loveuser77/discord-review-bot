@@ -5,7 +5,7 @@ load_dotenv()
 
 TOKEN = os.getenv("DISCORD_TOKEN")
 
-# Colores usados en los embeds para mantener una presentación consistente
+
 COLOR_PRINCIPAL = 0x2B2D31
 COLOR_EXITO = 0x2ECC71
 COLOR_ERROR = 0xE74C3C
@@ -14,7 +14,7 @@ COLOR_INFO = 0x5865F2
 
 DB_PATH = "bot.db"
 
-# Texto por defecto mostrado al abrir un ticket (editable con /mensaje-ticket)
+
 TEXTO_TICKET_DEFAULT = (
     "Bienvenido a tu ticket.\n\n"
     "Cuando quieras reclamar una reseña, usa el botón correspondiente. "
